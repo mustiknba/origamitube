@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OrigamiTube</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f9f9f9;
+}
+
+header{
+  display:flex;
+  align-items:center;
+  padding:10px 14px;
+  background:white;
+  border-bottom:1px solid #ddd;
+}
+
+#logo{
+  height:42px;
+  max-width:200px;
+  object-fit:contain;
+}
+
+nav{
+  display:flex;
+  gap:15px;
+  padding:10px;
+  background:#fff;
+  border-bottom:1px solid #ddd;
+}
+
+nav button{
+  background:none;
+  border:none;
+  font-size:14px;
+  cursor:pointer;
+}
+
+main{
+  padding:15px;
+}
+
+.video{
+  background:white;
+  border-radius:10px;
+  padding:10px;
+  margin-bottom:15px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.video img{
+  width:100%;
+  border-radius:8px;
+}
+
+.video h3{
+  margin:8px 0 4px;
+}
+
+.meta{
+  font-size:13px;
+  color:#555;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:6px;
+}
+
+.actions button{
+  border:none;
+  background:#eee;
+  padding:6px 10px;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+.subs-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  color:#555;
+  margin-top:4px;
+}
+
+.subs-row button{
+  font-size:12px;
+  border:none;
+  background:#eee;
+  padding:3px 8px;
+  border-radius:12px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<script>
+/* 🔑 ADMIN SWITCH */
+let isAdmin = true; // change to false for normal users
+</script>
+
+<header>
+<img id="logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD/9sAQwACAQEBAQECAQEBAgICAgICAgQDAgICAgUEBAMEBgUGBgYFBgYGBwkIBgcJBwYGCAsICQoKCgoKBggLDAsKDAkKCgr/9sAQwECAgICAgUEBAMEBgUGBgYGBwkIBgcJBwYGCAsICQoKCgoKBggLDAsKDAkKCgr/wAARCAAFAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAwT/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwC0AF//2Q==" alt="OrigamiTube Logo">
+</header>
+
+<nav>
+<button>🏠 Home</button>
+<button>📁 Channels</button>
+<button>🎬 Shorts</button>
+<button>🔍 Search</button>
+</nav>
+
+<main>
+
+<div class="video">
+<img src="https://picsum.photos/400/220?random=1">
+<h3>Origami Paper Airplane ✈️</h3>
+
+<div class="meta">Channel: PaperFolds</div>
+
+<div class="subs-row">
+  <span id="subs-paperfolds">1,000 subs</span>
+  <button id="edit-paperfolds" onclick="editSubs('subs-paperfolds')" style="display:none;">
+    ✏️ Set Subs
+  </button>
+</div>
+
+<div class="actions">
+<button>👍 Like</button>
+<button>👎 Dislike</button>
+<button>🔔 Subscribe</button>
+</div>
+</div>
+
+<div class="video">
+<img src="https://picsum.photos/400/220?random=2">
+<h3>Origami Ninja Star 🥷</h3>
+
+<div class="meta">Channel: FoldMaster</div>
+
+<div class="subs-row">
+  <span id="subs-foldmaster">25,000 subs</span>
+  <button id="edit-foldmaster" onclick="editSubs('subs-foldmaster')" style="display:none;">
+    ✏️ Set Subs
+  </button>
+</div>
+
+<div class="actions">
+<button>👍 Like</button>
+<button>👎 Dislike</button>
+<button>🔔 Subscribe</button>
+</div>
+</div>
+
+</main>
+
+<script>
+/* SHOW ADMIN BUTTONS */
+if (isAdmin) {
+  document.querySelectorAll(".subs-row button")
+    .forEach(btn => btn.style.display = "inline-block");
+}
+
+/* ADMIN EDIT SUBS */
+function editSubs(id){
+  const el = document.getElementById(id);
+  const input = prompt("Enter subscriber count:");
+  if(!input) return;
+
+  const num = Number(input.replace(/,/g,""));
+  if(isNaN(num)){
+    alert("Invalid number");
+    return;
+  }
+
+  el.innerText = num.toLocaleString() + " subs";
+}
+</script>
+
+</body>
+</html>
