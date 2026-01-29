@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OrigamiTube</title>
+
+<style>
+:root {
+  --bg: #f4f6fb;
+  --card: #ffffff;
+  --accent: #ff6b6b;
+  --text: #222;
+  --muted: #666;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* HEADER */
+header {
+  background: var(--card);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--accent);
+}
+
+.search {
+  flex: 1;
+}
+
+.search input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+/* GRID */
+main {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 10px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 10px;
+  background: #ddd;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 10px 0 4px;
+}
+
+.channel {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* PLAYER PAGE */
+#playerPage {
+  display: none;
+  padding: 20px;
+}
+
+.back {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.player-box {
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  max-width: 900px;
+}
+
+iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: none;
+}
+
+.player-title {
+  margin-top: 14px;
+  font-size: 20px;
+  font-weight: 700;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">OrigamiTube</div>
+  <div class="search">
+    <input id="searchInput" placeholder="Search origami videos…" oninput="renderHome()">
+  </div>
+</header>
+
+<main id="home"></main>
+
+<div id="playerPage">
+  <div class="back" onclick="goHome()">⬅ Back</div>
+  <div class="player-box">
+    <iframe id="player" allowfullscreen></iframe>
+  </div>
+  <div class="player-title" id="playerTitle"></div>
+</div>
+
+<script>
+/* ================= VIDEO DATABASE ================= */
+/* To add 1000 videos, ONLY add objects here */
+
+const videos = [
+  {
+    title: "How To Fold An Origami Dragon",
+    channel: "Art for Kids Hub",
+    videoId: "UEuw2G5usMA"
+  },
+  {
+    title: "How To Fold An Origami Snapper Puppet",
+    channel: "Art for Kids Hub",
+    videoId: "ybKPN9vNlHc"
+  },
+  {
+    title: "How To Make Paper Claws",
+    channel: "Art for Kids Hub",
+    videoId: "OiiQ0wGI004"
+  }
+];
+
+/* ================= HOME ================= */
+function renderHome() {
+  const home = document.getElementById("home");
+  const q = document.getElementById("searchInput").value.toLowerCase();
+
+  home.innerHTML = "";
+  home.style.display = "grid";
+  document.getElementById("playerPage").style.display = "none";
+
+  videos
+    .filter(v => v.title.toLowerCase().includes(q) || v.channel.toLowerCase().includes(q))
+    .forEach(v => {
+      home.innerHTML += `
+        <div class="card" onclick="playVideo('${v.videoId}','${v.title}')">
+          <img class="thumb" src="https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg">
+          <div class="title">${v.title}</div>
+          <div class="channel">${v.channel}</div>
+        </div>
+      `;
+    });
+}
+
+/* ================= PLAYER ================= */
+function playVideo(id, title) {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("playerPage").style.display = "block";
+  document.getElementById("playerTitle").innerText = title;
+
+  document.getElementById("player").src =
+    `https://www.youtube.com/embed/${id}?autoplay=1&controls=1&rel=0&modestbranding=1`;
+}
+
+/* ================= BACK ================= */
+function goHome() {
+  document.getElementById("player").src = "";
+  renderHome();
+}
+
+renderHome();
+</script>
+
+</body>
+</html>
